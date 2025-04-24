@@ -1,0 +1,78 @@
+bzip2:
+  patches:
+  - bzip2-def-file.patch
+  source: https://gitlab.com/bzip2/bzip2.git
+  targets:
+  - bz2
+  headers:
+    bzlib.h : .
+  deliverables:
+  - Release\bz2.lib
+  - Release\bz2.dll
+lzo2:
+  source: https://github.com/damageboy/lzo2.git
+  targets:
+  - lzo_static_lib
+  headers:
+    include\lzo\lzo1.h : lzo
+    include\lzo\lzo1a.h : lzo
+    include\lzo\lzo1b.h : lzo
+    include\lzo\lzo1c.h : lzo
+    include\lzo\lzo1f.h : lzo
+    include\lzo\lzo1x.h : lzo
+    include\lzo\lzo1y.h : lzo
+    include\lzo\lzo1z.h : lzo
+    include\lzo\lzo2a.h : lzo
+    include\lzo\lzo_asm.h : lzo
+    include\lzo\lzoconf.h : lzo
+    include\lzo\lzodefs.h : lzo
+    include\lzo\lzoutil.h : lzo
+  deliverables:
+  - Release\lzo2.lib
+xz:
+  source: https://git.tukaani.org/xz.git
+  targets:
+  - liblzma
+  headers:
+    src\liblzma\api\lzma.h : .
+    src\liblzma\api\lzma\base.h : lzma
+    src\liblzma\api\lzma\bcj.h : lzma
+    src\liblzma\api\lzma\block.h : lzma
+    src\liblzma\api\lzma\check.h : lzma
+    src\liblzma\api\lzma\container.h : lzma
+    src\liblzma\api\lzma\delta.h : lzma
+    src\liblzma\api\lzma\filter.h : lzma
+    src\liblzma\api\lzma\hardware.h : lzma
+    src\liblzma\api\lzma\index.h : lzma
+    src\liblzma\api\lzma\index_hash.h : lzma
+    src\liblzma\api\lzma\lzma12.h : lzma
+    src\liblzma\api\lzma\stream_flags.h : lzma
+    src\liblzma\api\lzma\version.h : lzma
+    src\liblzma\api\lzma\vli.h : lzma
+  deliverables:
+  - Release\liblzma.lib
+zlib:
+  source: https://github.com/madler/zlib.git
+  targets:
+  - zlib
+  - zlibstatic
+  headers:
+    zlib.h : .
+  headers-build:
+    zconf.h : .
+  deliverables:
+  - Release\zlib.dll
+  - Release\zlibstatic.lib
+zstd:
+  source: https://github.com/facebook/zstd.git
+  script_path: build\cmake
+  targets:
+  - libzstd_shared
+  - libzstd_static
+  headers:
+    lib\zdict.h : .
+    lib\zstd.h : .
+    lib\zstd_errors.h : .
+  deliverables:
+  - lib\Release\zstd.dll
+  - lib\Release\zstd_static.lib

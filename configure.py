@@ -223,6 +223,9 @@ def main(argv=sys.argv):
                         help='location of package builder, NullSoft '
                              'Installation System',
                         type=str, default=DEFAULT_MAKENSIS_LOCATION)
+    parser.add_argument('--do-arm',
+                        help='build ARM64 libraries, too',
+                        action='store_true')
     parser.add_argument('-v', '--verbose',
                         help='more detailed progress messages',
                         action='store_true')
@@ -247,6 +250,7 @@ def main(argv=sys.argv):
         compiler = repr(args.compiler)
     else:
         compiler = None
+    archs = ['Win32', 'x64', 'arm64'] if bool(args.do_arm) else []
 
     generator = find_generator()
 
@@ -260,6 +264,7 @@ def main(argv=sys.argv):
         print('COMPILER = {}'.format(repr(compiler)), file=configs)
         print('MAKE_NSIS = {}'.format(repr(make_nsis)), file=configs)
         print('VCVARS = {}'.format(vcvars_out), file=configs)
+        print('ARCHS = {}'.format(repr(archs)), file=configs)
     if v:
         print('Created configvars.py file with values:')
         print('    GENERATOR = {}'.format(repr(generator)))
@@ -267,6 +272,7 @@ def main(argv=sys.argv):
         print('    COMPILER = {}'.format(repr(compiler)))
         print('    MAKE_NSIS = {}'.format(repr(make_nsis)))
         print('    VCVARS = {}'.format(vcvars_out))
+        print('    ARCHS = {}'.format(repr(archs)))
 
     # write make.cmd running python make.py %*
     with open('make.cmd', 'w') as makebat:
