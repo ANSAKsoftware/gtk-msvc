@@ -9,6 +9,44 @@ bzip2:
   deliverables:
   - Release\bz2.lib
   - Release\bz2.dll
+expat:
+  source: https://github.com/libexpat/libexpat.git
+  script_path: expat
+  targets:
+  - expat
+  headers:
+    expat\lib\ascii.h : .
+    expat\lib\expat.h : .
+    expat\lib\iasciitab.h : .
+    expat\lib\latin1tab.h : .
+    expat\lib\siphash.h : .
+    expat\lib\winconfig.h : .
+    expat\lib\xmltok.h : .
+    expat\lib\asciitab.h : .
+    expat\lib\expat_external.h : .
+    expat\lib\internal.h : .
+    expat\lib\nametab.h : .
+    expat\lib\utf8tab.h : .
+    expat\lib\xmlrole.h : .
+    expat\lib\xmltok_impl.h : .
+  deliverables:
+  - libexpat.dll
+  - libexpat.lib
+graphite2:
+  source: https://github.com/silnrsi/graphite.git
+  prebuild_params:
+  - -DCMAKE_BUILD_TYPE=Release
+  - -Wno-dev
+  targets:
+  - graphite2
+  headers:
+    include\graphite2\Font.h : graphite2
+    include\graphite2\Log.h : graphite2
+    include\graphite2\Segment.h : graphite2
+    include\graphite2\Types.h : graphite2
+  deliverables:
+  - src\Release\graphite2.dll
+  - src\Release\graphite2.lib
 lzo2:
   source: https://github.com/damageboy/lzo2.git
   targets:
@@ -29,6 +67,23 @@ lzo2:
     include\lzo\lzoutil.h : lzo
   deliverables:
   - Release\lzo2.lib
+pcre2:
+  source: https://github.com/PCRE2Project/pcre2
+  targets:
+  - pcre2-8-static
+  headers:
+  - build\interface\pcre2.h : .
+  - build\interface\pcre2posix.h : .
+  deliverables:
+  - Release\pcre2-8-static.lib
+stemmer:
+  source: https://github.com/zvelo/libstemmer
+  targets:
+  - stemmer
+  headers:
+  - include\libstemmer.h : .
+  deliverables:
+  - Release\stemmer.lib
 xz:
   source: https://git.tukaani.org/xz.git
   targets:
@@ -50,19 +105,20 @@ xz:
     src\liblzma\api\lzma\version.h : lzma
     src\liblzma\api\lzma\vli.h : lzma
   deliverables:
-  - Release\liblzma.lib
+  - Release\lzma.lib
 zlib:
   source: https://github.com/madler/zlib.git
   targets:
   - zlib
   - zlibstatic
   headers:
-    zlib.h : .
-  headers-build:
-    zconf.h : .
+    zlib.h : zlib
+    build\zlib\Win32\zconf.h : zlib\Win32
+    build\zlib\x64\zconf.h : zlib\x64
   deliverables:
-  - Release\zlib.dll
-  - Release\zlibstatic.lib
+  - Release\z.dll
+  - Release\z.lib
+  - Release\zs.lib
 zstd:
   source: https://github.com/facebook/zstd.git
   script_path: build\cmake

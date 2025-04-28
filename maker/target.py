@@ -61,8 +61,9 @@ BUILD_RELEASE = "Release"
 
 class Builder:
 
-    def __init__(self, builder_name):
-        self.builder_name_ = builder_name
+    def __init__(self, element):
+        self.builder_name_ = element_.builder_name
+        self.prebuild_params_ = element_.prebuild_params()
         self.bob_ = None
         self.last_rc_ = 0
         self.dirs_ = {}
@@ -71,8 +72,8 @@ class Builder:
         for A in ARCHS:
             self.dirs_[A] = os.path.join(target.build_dir(), A)
             mkdir(self.dirs_[A])
-            p = proc.proc('cmake', target.script_path(), '-A', A,
-                          cwd=self.dirs_[A], consume=True)
+            params = [target.script_path()] + self.prebuild_params_ + ['-A', A]
+            p = proc.proc('cmake', *params, cwd=self.dirs_[A]), consume=True)
             if not p.ok():
                 print("ERROR: CMake parsing failed for {}".format(
                       target.name()), file=sys.stderr)
@@ -81,7 +82,7 @@ class Builder:
     def build(self, build_target):
         for A in self.dirs_:
             p = proc.proc('cmake', '--build', '.', '--config', BUILD_RELEASE,
-                          '-t', build_target, cwd=self.dirs_[A], consume=True)
+                          '-t', build_target, cwd=self.dirs_[A]), consume=True)
             p.ok()
 
     def post_build(self):
@@ -105,7 +106,7 @@ class Target:
             self.element_.script_path() is None else os.path.join(
                     self.source_sub_dir_, self.element_.script_path())
 
-        self.builder_ = Builder(self.element_.builder_name())
+        self.builder_ = Builder(self.element_)
 
     def name(self):
         return self.element_.name_
@@ -183,7 +184,7 @@ class Target:
             if header_dict[h] == '.':
                 dest = self.dirs_.include_dir()
             else:
-                dest = os.path.join(self.dirs_.include_dir(), header_dict['h'])
+                dest = os.path.join(self.dirs_.include_dir(), header_dict[h])
                 mkdir(dest)
             shutil.copy2(source, dest)
         # copy .lib's / .dll's from build to the destination

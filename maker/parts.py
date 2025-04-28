@@ -64,6 +64,8 @@ class Element:
             else self.yaml_content_['deliverables']
         self.builder_name_ = 'cmake' if 'builder' not in self.yaml_content_ \
             else self.yaml_content_['builder']
+        self.prebuild_params_ = [] if 'prebuild_params' not in self.yaml_content_ \
+            else self.yaml_content_['prebuild_params']
         self.script_path_ = None if 'script_path' not in self.yaml_content_ \
             else self.yaml_content_['script_path']
 
@@ -84,6 +86,9 @@ class Element:
 
     def builder_name(self):
         return self.builder_name_
+
+    def prebuild_params(self):
+        return self.prebuild_params_
 
     def targets(self):
         return self.targets_
